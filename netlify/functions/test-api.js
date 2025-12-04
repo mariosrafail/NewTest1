@@ -1,6 +1,6 @@
 // netlify/functions/test-api.js
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwnHpVTvcfZq61vceCkXq2wHMyLc9tBHYLAFDekoExGo15HuL6zRZwo2bS1WIwdXFeF/exec"; // Βάλε εδώ το ΤΕΛΕΥΤΑΙΟ /exec
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzNw3LfoU1rI556Guei8p5fcrwtoZgc-BKPX4PmFECdrHrdwjBntw_-5ug2MMzSf4wxng/exec"; // Βάλε εδώ το ΤΕΛΕΥΤΑΙΟ /exec
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
