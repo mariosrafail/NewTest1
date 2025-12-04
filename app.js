@@ -185,6 +185,31 @@ document.addEventListener("DOMContentLoaded", () => {
     return isMobileUA || isSmallScreen;
   }
 
+// global drag guard για κείμενο
+  document.addEventListener("dragstart", function (e) {
+    const target = e.target;
+    if (!target.classList.contains("word-chip")) {
+      e.preventDefault();
+    }
+  });
+
+  // right click και shortcuts (αν τα θέλεις πάντα ενεργά, μπορείς να τα βάλεις έξω από το if)
+  document.addEventListener("contextmenu", function (e) {
+    e.preventDefault();
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "F12") {
+      e.preventDefault();
+    }
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && ["I", "J", "C"].includes(e.key.toUpperCase())) {
+      e.preventDefault();
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key.toUpperCase() === "U") {
+      e.preventDefault();
+    }
+  });
+  
 
 
   // Elements
