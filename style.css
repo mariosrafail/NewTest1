@@ -425,7 +425,7 @@ body.mode-writing {
   padding: 2px 8px;
   border-radius: 12px;
   border: 1px dashed #9db6c0;
-  background-color: #00b3b0;
+  background-color: rgba(255, 255, 255, 0.9);
   align-items: center;
   justify-content: center;
   font-weight: 600;
@@ -478,6 +478,9 @@ body.mode-writing {
 }
 
 .word-chip.in-gap {
+  background-color: transparent;
+  color: transparent;
+  box-shadow: none;
   opacity: 0;
 }
 
