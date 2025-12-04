@@ -175,6 +175,144 @@ function setMode(mode) {
 
 // ---------- MAIN INIT ----------
 document.addEventListener("DOMContentLoaded", () => {
+	
+	function isMobileOrTablet() {
+  const ua = navigator.userAgent.toLowerCase();
+  const isMobileUA = /android|iphone|ipad|ipod|windows phone|opera mini|mobile/.test(ua);
+  const isSmallScreen = window.matchMedia("(max-width: 1024px)").matches;
+  return isMobileUA || isSmallScreen;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const mobileBlocker = document.getElementById("mobile-blocker");
+
+  if (isMobileOrTablet()) {
+    if (mobileBlocker) {
+      mobileBlocker.hidden = false;
+      document.body.classList.add("blocked-by-mobile");
+    }
+    // εδώ σταματάς την υπόλοιπη αρχικοποίηση για τις ασκήσεις
+    return;
+  }
+
+  // === ΕΔΩ βάζεις ΟΛΟ τον υπάρχοντα κώδικα για drag and drop κτλ ===
+  // πχ:
+  const wordBank = document.getElementById("word-bank");
+  const gaps = document.querySelectorAll(".gap-blank");
+
+  if (wordBank && gaps.length > 0) {
+    let draggedChip = null;
+
+    wordBank.querySelectorAll(".word-chip").forEach(chip => {
+      chip.addEventListener("dragstart", e => {
+        draggedChip = chip;
+        chip.classList.add("dragging");
+        e.dataTransfer.effectAllowed = "move";
+      });
+
+      chip.addEventListener("dragend", () => {
+        draggedChip = null;
+        chip.classList.remove("dragging");
+      });
+    });
+
+    gaps.forEach(gap => {
+      gap.addEventListener("dragover", e => {
+        e.preventDefault();
+        gap.classList.add("drag-over");
+      });
+
+      gap.addEventListener("dragleave", () => {
+        gap.classList.remove("drag-over");
+      });
+
+      gap.addEventListener("drop", e => {
+        e.preventDefault();
+        gap.classList.remove("drag-over");
+        if (!draggedChip) return;
+
+        const prevWord = gap.dataset.word || "";
+        if (prevWord) {
+          const chipInBank = [...wordBank.querySelectorAll(".word-chip")]
+            .find(ch => ch.dataset.word === prevWord && ch.classList.contains("in-gap"));
+          if (chipInBank) {
+            chipInBank.classList.remove("in-gap");
+          }
+        }
+
+        gap.textContent = draggedChip.dataset.word;
+        gap.dataset.word = draggedChip.dataset.word;
+
+        draggedChip.classList.add("in-gap");
+        gap.classList.add("filled");
+      });
+
+      gap.addEventListener("dblclick", () => {
+        const prevWord = gap.dataset.word || "";
+        if (!prevWord) return;
+
+        const chipInBank = [...wordBank.querySelectorAll(".word-chip")]
+          .find(ch => ch.dataset.word === prevWord);
+        if (chipInBank) {
+          chipInBank.classList.remove("in-gap");
+        }
+
+        gap.textContent = "(" + gap.dataset.index + ")";
+        gap.dataset.word = "";
+        gap.classList.remove("filled");
+      });
+    });
+  }
+
+  // global drag guard για κείμενο
+  document.addEventListener("dragstart", function (e) {
+    const target = e.target;
+    if (!target.classList.contains("word-chip")) {
+      e.preventDefault();
+    }
+  });
+
+  // right click και shortcuts (αν τα θέλεις πάντα ενεργά, μπορείς να τα βάλεις έξω από το if)
+  document.addEventListener("contextmenu", function (e) {
+    e.preventDefault();
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "F12") {
+      e.preventDefault();
+    }
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && ["I", "J", "C"].includes(e.key.toUpperCase())) {
+      e.preventDefault();
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key.toUpperCase() === "U") {
+      e.preventDefault();
+    }
+  });
+});
+
+
+	document.addEventListener("contextmenu", function (e) {
+	  e.preventDefault();
+	});
+	
+	document.addEventListener("keydown", function (e) {
+	  // F12
+	  if (e.key === "F12") {
+		e.preventDefault();
+	  }
+
+	  // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+	  if ((e.ctrlKey || e.metaKey) && e.shiftKey && ["I", "J", "C"].includes(e.key.toUpperCase())) {
+		e.preventDefault();
+	  }
+
+	  // Ctrl+U (View Source)
+	  if ((e.ctrlKey || e.metaKey) && e.key.toUpperCase() === "U") {
+		e.preventDefault();
+	  }
+	});
+
+
   // Elements
   const startScreen    = document.getElementById("screen-start");
   const listeningPage  = document.getElementById("screen-listening");
