@@ -1,7 +1,8 @@
 // ---------------- CONFIG ----------------
 // ΒΑΛΕ ΕΔΩ το URL του web app από το Apps Script
 // πχ "https://script.google.com/macros/s/AKfycby5N_.../exec"
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz9bT1tK2LCAxKA1QbtvQnrQ7VGTkvBqOSXKJ7jj8JcbepJAMk4QP3lLTiNcMu7nhjh/exec";
+// Πλέον μιλάμε στον Netlify proxy, ΟΧΙ στο Apps Script κατευθείαν
+const SCRIPT_URL = "/.netlify/functions/test-api";
 
 // Παίρνουμε το token από το ?t=... στο URL
 const urlParams = new URLSearchParams(window.location.search);
