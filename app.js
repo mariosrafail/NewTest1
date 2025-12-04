@@ -411,67 +411,74 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ---------- Drag & drop για τα gaps στο Writing ----------
-  if (wordBank && gaps.length > 0) {
-    let draggedChip = null;
+if (wordBank && gaps.length > 0) {
+  let draggedChip = null;
 
-    wordBank.querySelectorAll(".word-chip").forEach(chip => {
-      chip.addEventListener("dragstart", e => {
-        draggedChip = chip;
-        chip.classList.add("dragging");
-        e.dataTransfer.effectAllowed = "move";
-      });
-
-      chip.addEventListener("dragend", () => {
-        draggedChip = null;
-        chip.classList.remove("dragging");
-      });
+  wordBank.querySelectorAll(".word-chip").forEach(chip => {
+    chip.addEventListener("dragstart", e => {
+      draggedChip = chip;
+      chip.classList.add("dragging");
+      e.dataTransfer.effectAllowed = "move";
     });
 
-    gaps.forEach(gap => {
-      gap.addEventListener("dragover", e => {
-        e.preventDefault();
-        gap.classList.add("drag-over");
-      });
+    chip.addEventListener("dragend", () => {
+      draggedChip = null;
+      chip.classList.remove("dragging");
+    });
+  });
 
-      gap.addEventListener("dragleave", () => {
-        gap.classList.remove("drag-over");
-      });
+  gaps.forEach(gap => {
+    gap.addEventListener("dragover", e => {
+      e.preventDefault();
+      gap.classList.add("drag-over");
+    });
 
-      gap.addEventListener("drop", e => {
-        e.preventDefault();
-        gap.classList.remove("drag-over");
-        if (!draggedChip) return;
+    gap.addEventListener("dragleave", () => {
+      gap.classList.remove("drag-over");
+    });
 
-        const prevWord = gap.dataset.word || "";
-        if (prevWord) {
-          const chipInBank = [...wordBank.querySelectorAll(".word-chip")]
-            .find(ch => ch.dataset.word === prevWord && ch.classList.contains("in-gap"));
-          if (chipInBank) {
-            chipInBank.classList.remove("in-gap");
-          }
-        }
+    gap.addEventListener("drop", e => {
+      e.preventDefault();
+      gap.classList.remove("drag-over");
+      if (!draggedChip) return;
 
-        gap.textContent = draggedChip.dataset.word;
-        gap.dataset.word = draggedChip.dataset.word;
-
-        draggedChip.classList.add("in-gap");
-      });
-
-      gap.addEventListener("dblclick", () => {
-        const prevWord = gap.dataset.word || "";
-        if (!prevWord) return;
-
+      const prevWord = gap.dataset.word || "";
+      if (prevWord) {
         const chipInBank = [...wordBank.querySelectorAll(".word-chip")]
-          .find(ch => ch.dataset.word === prevWord);
+          .find(ch => ch.dataset.word === prevWord && ch.classList.contains("in-gap"));
         if (chipInBank) {
           chipInBank.classList.remove("in-gap");
         }
+      }
 
-        gap.textContent = "(" + gap.dataset.index + ")";
-        gap.dataset.word = "";
-      });
+      gap.textContent = draggedChip.dataset.word;
+      gap.dataset.word = draggedChip.dataset.word;
+
+      draggedChip.classList.add("in-gap");
+
+      // ΝΕΟ: μαρκάρουμε το gap ως γεμάτο
+      gap.classList.add("filled");
     });
-  }
+
+    gap.addEventListener("dblclick", () => {
+      const prevWord = gap.dataset.word || "";
+      if (!prevWord) return;
+
+      const chipInBank = [...wordBank.querySelectorAll(".word-chip")]
+        .find(ch => ch.dataset.word === prevWord);
+      if (chipInBank) {
+        chipInBank.classList.remove("in-gap");
+      }
+
+      gap.textContent = "(" + gap.dataset.index + ")";
+      gap.dataset.word = "";
+
+      // ΝΕΟ: ξανακάνουμε το gap «άδειο»
+      gap.classList.remove("filled");
+    });
+  });
+}
+
 
   // ---------- Συλλογή απαντήσεων ----------
   function collectAnswers() {

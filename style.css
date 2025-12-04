@@ -434,7 +434,7 @@ body.mode-writing {
   transition: background-color 0.16s ease, box-shadow 0.16s ease, transform 0.08s ease;
 }
 
-.gap-blank.drag-over {
+.gap-blank.filled {
   background-color: #00b3b0;
   color: #ffffff;
   border: none;
@@ -442,6 +442,11 @@ body.mode-writing {
   transform: translateY(-1px);
 }
 
+.gap-blank.drag-over {
+  background-color: #e6fbff;
+  box-shadow: 0 0 0 3px rgba(0, 179, 176, 0.25);
+  transform: translateY(-1px);
+}
 
 .word-bank-title {
   font-size: 18px;
