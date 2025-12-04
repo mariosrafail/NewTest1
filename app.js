@@ -1,10 +1,8 @@
 // ---------------- CONFIG ----------------
-// ΒΑΛΕ ΕΔΩ το URL του web app από το Apps Script
-// πχ "https://script.google.com/macros/s/AKfycby5N_.../exec"
-// Πλέον μιλάμε στον Netlify proxy, ΟΧΙ στο Apps Script κατευθείαν
+// Netlify proxy to Apps Script
 const SCRIPT_URL = "/.netlify/functions/test-api";
 
-// Παίρνουμε το token από το ?t=... στο URL
+// Get token from ?t=... in URL
 const urlParams = new URLSearchParams(window.location.search);
 const token = urlParams.get("t") || "";
 
@@ -19,7 +17,7 @@ function pad(n) {
   return n < 10 ? "0" + n : String(n);
 }
 
-// Ξερό JSON POST προς Apps Script
+// Simple JSON POST to backend
 async function apiPost(payload) {
   const res = await fetch(SCRIPT_URL, {
     method: "POST",
@@ -173,111 +171,41 @@ function setMode(mode) {
   document.body.classList.add(mode);
 }
 
-// ---------- MAIN INIT ----------
-document.addEventListener("DOMContentLoaded", () => {
-	
-	function isMobileOrTablet() {
-  const ua = navigator.userAgent.toLowerCase();
+// ---------- DEVICE DETECTION ----------
+function isMobileOrTablet() {
+  const ua = (navigator.userAgent || navigator.vendor || window.opera || "").toLowerCase();
   const isMobileUA = /android|iphone|ipad|ipod|windows phone|opera mini|mobile/.test(ua);
-  const isSmallScreen = window.matchMedia("(max-width: 1024px)").matches;
+  const isSmallScreen =
+    window.matchMedia &&
+    window.matchMedia("(max-width: 1024px) and (pointer: coarse)").matches;
   return isMobileUA || isSmallScreen;
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+// ---------- MAIN INIT ----------
+document.addEventListener("DOMContentLoaded", () => {
   const mobileBlocker = document.getElementById("mobile-blocker");
 
+  // Mobile / tablet blocker
   if (isMobileOrTablet()) {
     if (mobileBlocker) {
       mobileBlocker.hidden = false;
       document.body.classList.add("blocked-by-mobile");
     }
-    // εδώ σταματάς την υπόλοιπη αρχικοποίηση για τις ασκήσεις
-    return;
-  }
-
-  // === ΕΔΩ βάζεις ΟΛΟ τον υπάρχοντα κώδικα για drag and drop κτλ ===
-  // πχ:
-  const wordBank = document.getElementById("word-bank");
-  const gaps = document.querySelectorAll(".gap-blank");
-
-  if (wordBank && gaps.length > 0) {
-    let draggedChip = null;
-
-    wordBank.querySelectorAll(".word-chip").forEach(chip => {
-      chip.addEventListener("dragstart", e => {
-        draggedChip = chip;
-        chip.classList.add("dragging");
-        e.dataTransfer.effectAllowed = "move";
-      });
-
-      chip.addEventListener("dragend", () => {
-        draggedChip = null;
-        chip.classList.remove("dragging");
-      });
-    });
-
-    gaps.forEach(gap => {
-      gap.addEventListener("dragover", e => {
-        e.preventDefault();
-        gap.classList.add("drag-over");
-      });
-
-      gap.addEventListener("dragleave", () => {
-        gap.classList.remove("drag-over");
-      });
-
-      gap.addEventListener("drop", e => {
-        e.preventDefault();
-        gap.classList.remove("drag-over");
-        if (!draggedChip) return;
-
-        const prevWord = gap.dataset.word || "";
-        if (prevWord) {
-          const chipInBank = [...wordBank.querySelectorAll(".word-chip")]
-            .find(ch => ch.dataset.word === prevWord && ch.classList.contains("in-gap"));
-          if (chipInBank) {
-            chipInBank.classList.remove("in-gap");
-          }
-        }
-
-        gap.textContent = draggedChip.dataset.word;
-        gap.dataset.word = draggedChip.dataset.word;
-
-        draggedChip.classList.add("in-gap");
-        gap.classList.add("filled");
-      });
-
-      gap.addEventListener("dblclick", () => {
-        const prevWord = gap.dataset.word || "";
-        if (!prevWord) return;
-
-        const chipInBank = [...wordBank.querySelectorAll(".word-chip")]
-          .find(ch => ch.dataset.word === prevWord);
-        if (chipInBank) {
-          chipInBank.classList.remove("in-gap");
-        }
-
-        gap.textContent = "(" + gap.dataset.index + ")";
-        gap.dataset.word = "";
-        gap.classList.remove("filled");
-      });
-    });
-  }
-
-  // global drag guard για κείμενο
-  document.addEventListener("dragstart", function (e) {
-    const target = e.target;
-    if (!target.classList.contains("word-chip")) {
-      e.preventDefault();
+    hideLoading();
+    return; // stop here, do not init the test
+  } else {
+    if (mobileBlocker) {
+      mobileBlocker.hidden = true;
     }
-  });
+    document.body.classList.remove("blocked-by-mobile");
+  }
 
-  // right click και shortcuts (αν τα θέλεις πάντα ενεργά, μπορείς να τα βάλεις έξω από το if)
-  document.addEventListener("contextmenu", function (e) {
+  // Right click and devtools shortcuts disabled
+  document.addEventListener("contextmenu", e => {
     e.preventDefault();
   });
 
-  document.addEventListener("keydown", function (e) {
+  document.addEventListener("keydown", e => {
     if (e.key === "F12") {
       e.preventDefault();
     }
@@ -288,30 +216,15 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
     }
   });
-});
 
-
-	document.addEventListener("contextmenu", function (e) {
-	  e.preventDefault();
-	});
-	
-	document.addEventListener("keydown", function (e) {
-	  // F12
-	  if (e.key === "F12") {
-		e.preventDefault();
-	  }
-
-	  // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
-	  if ((e.ctrlKey || e.metaKey) && e.shiftKey && ["I", "J", "C"].includes(e.key.toUpperCase())) {
-		e.preventDefault();
-	  }
-
-	  // Ctrl+U (View Source)
-	  if ((e.ctrlKey || e.metaKey) && e.key.toUpperCase() === "U") {
-		e.preventDefault();
-	  }
-	});
-
+  // Global drag guard: only allow dragging the word chips
+  document.addEventListener("dragstart", function (e) {
+    const target = e.target;
+    if (!(target instanceof HTMLElement)) return;
+    if (!target.classList.contains("word-chip")) {
+      e.preventDefault();
+    }
+  });
 
   // Elements
   const startScreen    = document.getElementById("screen-start");
@@ -340,16 +253,23 @@ document.addEventListener("DOMContentLoaded", function () {
   const wordBank       = document.getElementById("word-bank");
   const gaps           = document.querySelectorAll(".gap-blank");
 
-  // Intro overlay click to unmute intro audio
+  // Intro overlay click: start the intro audio from the beginning on first click only
+  let introStarted = false;
   if (startOverlay && introAudio) {
     startOverlay.addEventListener("click", () => {
-      introAudio.muted = false;
+      if (introStarted) return;
+      introStarted = true;
+      try {
+        introAudio.currentTime = 0;
+      } catch (e) {
+        // ignore
+      }
       introAudio.play().catch(() => {});
       startOverlay.style.display = "none";
     });
   }
 
-  // ---------- ΑΡΧΙΚΟΣ ΕΛΕΓΧΟΣ ΜΕ TOKEN ----------
+  // ---------- INITIAL STATUS (TOKEN) ----------
   if (token) {
     (async () => {
       showLoading();
@@ -370,8 +290,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const remainingSeconds = data.remainingSeconds || 0;
 
         if (status === "ended" || status === "time_over") {
-          if (headerBar)    headerBar.classList.add("hidden");
-          if (startScreen)  startScreen.classList.add("hidden");
+          if (headerBar)     headerBar.classList.add("hidden");
+          if (startScreen)   startScreen.classList.add("hidden");
           if (listeningPage) listeningPage.classList.add("hidden");
           if (readingPage)   readingPage.classList.add("hidden");
           if (writingPage)   writingPage.classList.add("hidden");
@@ -387,7 +307,7 @@ document.addEventListener("DOMContentLoaded", function () {
           return;
         }
 
-        // Έχει ήδη ξεκινήσει
+        // Test has already started
         testStarted = true;
 
         if (remainingSeconds > 0) {
@@ -490,7 +410,7 @@ document.addEventListener("DOMContentLoaded", function () {
       showConfirm(msg, async () => {
         hasPlayedOnce = true;
 
-        // Μαρκάρουμε LISTEN_PLAYS = 1, non-blocking
+        // Mark LISTEN_PLAYS = 1 (non-blocking)
         if (token) {
           apiPost({ action: "listen_started", token }).catch(err => {
             console.error("listen_started error", err);
@@ -548,77 +468,73 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ---------- Drag & drop για τα gaps στο Writing ----------
-if (wordBank && gaps.length > 0) {
-  let draggedChip = null;
+  // ---------- Drag & drop for Writing gaps ----------
+  if (wordBank && gaps.length > 0) {
+    let draggedChip = null;
 
-  wordBank.querySelectorAll(".word-chip").forEach(chip => {
-    chip.addEventListener("dragstart", e => {
-      draggedChip = chip;
-      chip.classList.add("dragging");
-      e.dataTransfer.effectAllowed = "move";
+    wordBank.querySelectorAll(".word-chip").forEach(chip => {
+      chip.addEventListener("dragstart", e => {
+        draggedChip = chip;
+        chip.classList.add("dragging");
+        if (e.dataTransfer) {
+          e.dataTransfer.effectAllowed = "move";
+        }
+      });
+
+      chip.addEventListener("dragend", () => {
+        draggedChip = null;
+        chip.classList.remove("dragging");
+      });
     });
 
-    chip.addEventListener("dragend", () => {
-      draggedChip = null;
-      chip.classList.remove("dragging");
-    });
-  });
+    gaps.forEach(gap => {
+      gap.addEventListener("dragover", e => {
+        e.preventDefault();
+        gap.classList.add("drag-over");
+      });
 
-  gaps.forEach(gap => {
-    gap.addEventListener("dragover", e => {
-      e.preventDefault();
-      gap.classList.add("drag-over");
-    });
+      gap.addEventListener("dragleave", () => {
+        gap.classList.remove("drag-over");
+      });
 
-    gap.addEventListener("dragleave", () => {
-      gap.classList.remove("drag-over");
-    });
+      gap.addEventListener("drop", e => {
+        e.preventDefault();
+        gap.classList.remove("drag-over");
+        if (!draggedChip) return;
 
-    gap.addEventListener("drop", e => {
-      e.preventDefault();
-      gap.classList.remove("drag-over");
-      if (!draggedChip) return;
+        const prevWord = gap.dataset.word || "";
+        if (prevWord) {
+          const chipInBank = Array.from(wordBank.querySelectorAll(".word-chip"))
+            .find(ch => ch.dataset.word === prevWord && ch.classList.contains("in-gap"));
+          if (chipInBank) {
+            chipInBank.classList.remove("in-gap");
+          }
+        }
 
-      const prevWord = gap.dataset.word || "";
-      if (prevWord) {
-        const chipInBank = [...wordBank.querySelectorAll(".word-chip")]
-          .find(ch => ch.dataset.word === prevWord && ch.classList.contains("in-gap"));
+        gap.textContent   = draggedChip.dataset.word;
+        gap.dataset.word  = draggedChip.dataset.word;
+        draggedChip.classList.add("in-gap");
+        gap.classList.add("filled");
+      });
+
+      gap.addEventListener("dblclick", () => {
+        const prevWord = gap.dataset.word || "";
+        if (!prevWord) return;
+
+        const chipInBank = Array.from(wordBank.querySelectorAll(".word-chip"))
+          .find(ch => ch.dataset.word === prevWord);
         if (chipInBank) {
           chipInBank.classList.remove("in-gap");
         }
-      }
 
-      gap.textContent = draggedChip.dataset.word;
-      gap.dataset.word = draggedChip.dataset.word;
-
-      draggedChip.classList.add("in-gap");
-
-      // ΝΕΟ: μαρκάρουμε το gap ως γεμάτο
-      gap.classList.add("filled");
+        gap.textContent  = "(" + gap.dataset.index + ")";
+        gap.dataset.word = "";
+        gap.classList.remove("filled");
+      });
     });
+  }
 
-    gap.addEventListener("dblclick", () => {
-      const prevWord = gap.dataset.word || "";
-      if (!prevWord) return;
-
-      const chipInBank = [...wordBank.querySelectorAll(".word-chip")]
-        .find(ch => ch.dataset.word === prevWord);
-      if (chipInBank) {
-        chipInBank.classList.remove("in-gap");
-      }
-
-      gap.textContent = "(" + gap.dataset.index + ")";
-      gap.dataset.word = "";
-
-      // ΝΕΟ: ξανακάνουμε το gap «άδειο»
-      gap.classList.remove("filled");
-    });
-  });
-}
-
-
-  // ---------- Συλλογή απαντήσεων ----------
+  // ---------- Collect answers ----------
   function collectAnswers() {
     const answers = {};
 
@@ -650,7 +566,7 @@ if (wordBank && gaps.length > 0) {
     return answers;
   }
 
-  // ---------- Τελικό submit ----------
+  // ---------- Final submit ----------
   if (finalSubmitBtn) {
     finalSubmitBtn.addEventListener("click", () => {
       if (!token) {
@@ -698,10 +614,8 @@ if (wordBank && gaps.length > 0) {
           if (listeningPage) listeningPage.classList.add("hidden");
           if (readingPage)   readingPage.classList.add("hidden");
           if (writingPage)   writingPage.classList.add("hidden");
-
-          if (headerBar) headerBar.classList.add("hidden");
-
-          if (endScreen) endScreen.classList.remove("hidden");
+          if (headerBar)     headerBar.classList.add("hidden");
+          if (endScreen)     endScreen.classList.remove("hidden");
         } catch (err) {
           console.error(err);
           hideLoading();
