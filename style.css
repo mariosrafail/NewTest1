@@ -478,16 +478,14 @@ body.mode-writing {
 }
 
 .word-chip.in-gap {
-  background: transparent;
-  box-shadow: none;
-  border-radius: 0;
-  padding: 0;
-  margin: 0;
-  color: #305468;
+  all: unset;
+  display: inline;
   font-weight: 600;
-  cursor: pointer; /* ή default αν δεν θες χεράκι */
+  color: #305468;
+  cursor: pointer;
+  padding: 0 !important;
+  margin: 0 !important;
 }
-
 
 .word-bank-help {
   font-size: 16px;
