@@ -1,7 +1,7 @@
 // ---------------- CONFIG ----------------
 // ΒΑΛΕ ΕΔΩ το URL του web app από το Apps Script
 // πχ "https://script.google.com/macros/s/AKfycby5N_.../exec"
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbydJMaqUCj5z4vGJMTxu2eJQxol7umSHPcYQH6xORv_sUn4qEipzihjh4GJLbDrxnLd/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxjqPw5m6a5kI-NWnhXKMAEfIejMujBu1rnlqYcnTfE-JZCn8XeteFV5O_YCfYjFFYV/exec";
 
 // Παίρνουμε το token από το ?t=... στο URL
 const urlParams = new URLSearchParams(window.location.search);
