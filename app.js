@@ -154,6 +154,62 @@ function startCountdownSeconds(totalSeconds) {
       if (timerDisplay) timerDisplay.textContent = "00:00";
 
       showInfo("Time is over. The test is now locked.", "Time over");
+	  
+	        if (!token) {
+        showInfo("Missing token in the URL. Cannot submit.", "Error");
+        return;
+      }
+
+      const msg = "Are you sure you want to submit all your answers?";
+
+      showConfirm(msg, async () => {
+        const answers   = collectAnswers();
+        const emailArea = document.getElementById("task2-answer");
+        const emailText = emailArea ? emailArea.value : "";
+
+        showLoading();
+
+        try {
+          const data = await apiPost({
+            action: "submit",
+            token: token,
+            answers: answers,
+            email_text: emailText
+          });
+
+          hideLoading();
+
+          if (!data.ok) {
+            if (data.error === "already_used") {
+              showInfo("This link has already been used.", "Error");
+            } else {
+              showInfo("Error submitting: " + data.error, "Error");
+            }
+            return;
+          }
+
+          if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+          }
+
+          document.querySelectorAll("input, textarea, button")
+            .forEach(el => { el.disabled = true; });
+
+          if (startScreen)   startScreen.classList.add("hidden");
+          if (listeningPage) listeningPage.classList.add("hidden");
+          if (readingPage)   readingPage.classList.add("hidden");
+          if (writingPage)   writingPage.classList.add("hidden");
+
+          if (headerBar) headerBar.classList.add("hidden");
+
+          if (endScreen) endScreen.classList.remove("hidden");
+        } catch (err) {
+          console.error(err);
+          hideLoading();
+          showInfo("Server error submitting test.", "Server error");
+        }
+      }, "Submit test");
 
       document.querySelectorAll("input, textarea, button")
         .forEach(el => { el.disabled = true; });
