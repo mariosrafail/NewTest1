@@ -478,14 +478,14 @@ body.mode-writing {
 }
 
 .word-chip.in-gap {
-  all: unset;
-  display: inline;
-  font-weight: 600;
-  color: #305468;
+  all: unset;            /* σβήνει ΤΑ ΠΑΝΤΑ από το default styling */
+  display: inline;       /* να φέρεται σαν σκέτο κείμενο */
+  color: #305468;        /* ίδιο χρώμα με το text */
+  font-weight: 600;      /* ίδιο με το κείμενο του gap */
   cursor: pointer;
-  padding: 0 !important;
-  margin: 0 !important;
 }
+
+
 
 .word-bank-help {
   font-size: 16px;
