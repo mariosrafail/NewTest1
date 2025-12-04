@@ -478,7 +478,7 @@ body.mode-writing {
 }
 
 .word-chip.in-gap {
-  background-color: #00b3b0;
+  background-color: red;
   color: #ffffff;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
 }
