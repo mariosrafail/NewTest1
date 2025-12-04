@@ -211,6 +211,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   
+  document.addEventListener("keydown", function (e) {
+	  // Απαγόρευση Ctrl+S (ή Cmd+S σε Mac)
+	  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+		e.preventDefault();
+		return false;
+	  }
+	});
+  
 
 
   // Elements
