@@ -425,7 +425,7 @@ body.mode-writing {
   padding: 2px 8px;
   border-radius: 12px;
   border: 1px dashed #9db6c0;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: #00b3b0;
   align-items: center;
   justify-content: center;
   font-weight: 600;
@@ -455,7 +455,7 @@ body.mode-writing {
   border: none;
   border-radius: 999px;
   padding: 6px 14px;
-  background: red;
+  background: #ffffff;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   font-size: 16px;
   cursor: grab;
@@ -478,10 +478,9 @@ body.mode-writing {
 }
 
 .word-chip.in-gap {
-  background-color: red;
-  color: #ffffff;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+  opacity: 0;
 }
+
 
 .word-bank-help {
   font-size: 16px;
