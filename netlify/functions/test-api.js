@@ -1,6 +1,6 @@
 // netlify/functions/test-api.js
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbytmRXdRHuph7OnrZfUoFQSd8VcZxnmf_H-CW-2qPVm_Sy6R4AX2ERGZcDHgLo8l76w/exec"; // Βάλε εδώ το ΤΕΛΕΥΤΑΙΟ /exec
+const SCRIPT_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLjG8XNNBxBPMOzQvEmmdJjjbplhiNQJWlMxgz3mfQL2jKqVEukfB52fdiulh3xtrOvW4UM4qhB6OGagiAj69gXmbVsBZdxnhnFe873Im6sQEjq5TKEDcCoIHWFkc1TLH1afVWBTRGAZibwXAWe8YSVkRezWCOT6NkAG-AZO6Rho6OELz12OMf5yFosPjghwECdH_JVzPZw4Oz-BlUNy44jA61M9fewgvPFPA0dbo0iQlVKp4v_OY96OovVSQPlNOKqhHmFEyAVcqUUHmXv-Ualx5lr0nQ&lib=M5L7JnYqMqXZV1to1RqvwSdPresDUHxts"; // Βάλε εδώ το ΤΕΛΕΥΤΑΙΟ /exec
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
