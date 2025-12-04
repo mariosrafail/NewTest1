@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tourism Certification Test – Listening, Reading & Writing</title>
+
+  <!-- Google font -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap">
+
+  <!-- Το CSS σου, 1:1 από το style.gs -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="mode-listening">
+  <!-- LOADING OVERLAY -->
+  <div id="loading-overlay">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <!-- FIXED HEADER: LOGO + TIMER -->
+  <div class="exam-header-bar">
+    <div class="exam-header-inner">
+      <div class="exam-logo">
+        <img src="https://www.dropbox.com/scl/fi/ebr2ukflo96ivicpvz3xs/e4sp_logo.png?rlkey=f307ywcabdi2cbjuo8gdkyawl&st=k0wfx9cx&raw=1" alt="Tourism Certification Test logo">
+      </div>
+
+      <div class="exam-timer-box">
+        <span class="timer-label">Time remaining</span>
+        <span id="timer-remaining" class="timer-remaining">60:00</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN 0: START ========== -->
+  <div id="screen-start" class="page-wrapper start-page">
+    <header class="page-header">
+      <div class="listening-banner">
+        <img src="https://www.dropbox.com/scl/fi/h8h6g403j03t3k3xub0ma/listening_ribbon.png?rlkey=kqfv716cus7c9lkh7miknaju4&st=eq7ushwx&raw=1" alt="Start ribbon" class="banner-img">
+        <h1 class="banner-title">WELCOME</h1>
+      </div>
+    </header>
+
+    <section class="audio-section">
+
+      <!-- Intro audio + “Press anywhere to start” -->
+      <audio id="introAudio" autoplay muted>
+        <source src="https://www.dropbox.com/scl/fi/qln8u0twz2bbbvbge7jaq/intro.mp3?rlkey=xkvk7b1ui229bz2dzs5hmuwdu&st=jsm93n8o&raw=1" type="audio/mpeg">
+      </audio>
+
+      <div id="startOverlayClick" style="
+        position:fixed;
+        inset:0;
+        background:#0008;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        color:white;
+        font-size:24px;
+        cursor:pointer;">
+        Press anywhere to start.
+      </div>
+
+      <h2 class="section-title">Before you start.</h2>
+      <p class="section-subtitle">
+        This test has a total duration of <strong>60 minutes</strong>.
+        When you press the <strong>START THE TEST</strong> button below, the countdown will begin and you will not be able to return to this screen.
+      </p>
+      <ul class="start-rules">
+        <li>You will hear the dialogues <strong>twice</strong>.</li>
+        <li><strong>DO NOT close or refresh</strong> the browser during the listening test.</li>
+        <li>After the Listening Part, you will continue to Part 2: Reading, and then Part 3: Writing.</li>
+        <li>You cannot go back to Listening once you leave that part.</li>
+      </ul>
+      <p class="section-subtitle">
+        You can start the test now. Good luck!
+      </p>
+
+      <button id="start-btn" class="btn btn-primary btn-large">
+        Start the test
+      </button>
+
+      <p id="start-error" class="start-error"></p>
+    </section>
+  </div>
+
+  <!-- ========== SCREEN 1: LISTENING ========== -->
+  <div id="screen-listening" class="page-wrapper listening-page hidden">
+
+    <header class="page-header">
+      <div class="listening-banner">
+        <img src="https://www.dropbox.com/scl/fi/h8h6g403j03t3k3xub0ma/listening_ribbon.png?rlkey=kqfv716cus7c9lkh7miknaju4&st=eq7ushwx&raw=1" alt="Listening ribbon" class="banner-img">
+        <h1 class="banner-title">PART 1: LISTENING</h1>
+      </div>
+    </header>
+
+    <section class="audio-section">
+      <audio id="main-audio" src="https://www.dropbox.com/scl/fi/7wy95cpxqaqscx677g6oz/listening.mp3?rlkey=1tymlm0mbg6e7xx9lk84sl206&st=h10wyjfs&raw=1"></audio>
+
+      <h2 class="section-title">Listening Section</h2>
+      <p class="section-subtitle">
+        You will hear the dialogues <strong>twice</strong>. Listen carefully before answering the questions.
+      </p>
+
+      <button id="audio-play-btn" class="btn btn-primary btn-large">
+        ▶ Play Listening
+      </button>
+      <p id="audio-status" class="audio-status">
+        Press the button above to start the listening part. You can listen only once.
+      </p>
+    </section>
+
+    <!-- LISTENING QUESTIONS -->
+    <div id="listening-questions" class="hidden">
+
+      <section class="exercise exercise-a">
+        <div class="exercise-header-card">
+          <h2>Exercise A: Numbers 1 to 6</h2>
+          <p>
+            Listen to the following three dialogues.
+            For questions 1 to 6, choose then click the correct answer.
+          </p>
+        </div>
+
+        <div class="dialogue-label">✈ Dialogue 1</div>
+
+        <div class="question-card">
+          <div class="question-body">
+            <div class="question-text">
+              <span class="q-number">1.</span>
+              <span>Who is asking for help?</span>
+            </div>
+            <div class="options">
+              <label class="option">
+                <input type="radio" name="q1" value="A">
+                <span>A tourist.</span>
+              </label>
+              <label class="option">
+                <input type="radio" name="q1" value="B">
+                <span>A local.</span>
+              </label>
+              <label class="option">
+                <input type="radio" name="q1" value="C">
+                <span>A shopkeeper.</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="question-body">
+            <div class="question-text">
+              <span class="q-number">2.</span>
+              <span>Where is the museum?</span>
+            </div>
+            <div class="options">
+              <label class="option">
+                <input type="radio" name="q2" value="A">
+                <span>Near the hotel.</span>
+              </label>
+              <label class="option">
+                <input type="radio" name="q2" value="B">
+                <span>Near the park.</span>
+              </label>
+              <label class="option">
+                <input type="radio" name="q2" value="C">
+                <span>Near the church.</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="dialogue-label">✈ Dialogue 2</div>
+
+        <div class="question-card">
+          <div class="question-body">
+            <div class="question-text">
+              <span class="q-number">3.</span>
+              <span>What do Anita and Jorge plan to do while waiting?</span>
+            </div>
+            <div class="options">
+              <label class="option">
+                <input type="radio" name="q3" value="A">
+                <span>Go home.</span>
+              </label>
+              <label class="option">
+                <input type="radio" name="q3" value="B">
+                <span>Get coffee.</span>
+              </label>
+              <label class="option">
+                <input type="radio" name="q3" value="C">
+                <span>Call the store.</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="question-body">
+            <div class="question-text">
+              <span class="q-number">4.</span>
+              <span>Why does Jorge want to sit inside the café?</span>
+            </div>
+            <div class="options">
+              <label class="option">
+                <input type="radio" name="q4" value="A">
+                <span>He doesn’t like the park.</span>
+              </label>
+              <label class="option">
+                <input type="radio" name="q4" value="B">
+                <span>It’s raining.</span>
+              </label>
+              <label class="option">
+                <input type="radio" name="q4" value="C">
+                <span>It’s cold.</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="dialogue-label">✈ Dialogue 3</div>
+
+        <div class="question-card">
+          <div class="question-body">
+            <div class="question-text">
+              <span class="q-number">5.</span>
+              <span>What does Stephen initially suggest for dinner?</span>
+            </div>
+            <div class="options">
+              <label class="option">
+                <input type="radio" name="q5" value="A">
+                <span>The new Italian restaurant.</span>
+              </label>
+              <label class="option">
+                <input type="radio" name="q5" value="B">
+                <span>The pizzeria.</span>
+              </label>
+              <label class="option">
+                <input type="radio" name="q5" value="C">
+                <span>Cooking at home.</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="question-body">
+            <div class="question-text">
+              <span class="q-number">6.</span>
+              <span>Why does Lisa want to go to the new Italian restaurant tonight?</span>
+            </div>
+            <div class="options">
+              <label class="option">
+                <input type="radio" name="q6" value="A">
+                <span>She has never been to a pizzeria.</span>
+              </label>
+              <label class="option">
+                <input type="radio" name="q6" value="B">
+                <span>She wants to try the new place and its pasta.</span>
+              </label>
+              <label class="option">
+                <input type="radio" name="q6" value="C">
+                <span>She prefers pizza over pasta.</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="exercise exercise-b">
+        <div class="exercise-header-card">
+          <h2>Exercise B: Numbers 7 to 8</h2>
+          <p>
+            You will hear a short announcement.
+            For questions 7 to 8, decide whether the statements are <em>True</em> or <em>False</em>,
+            and click the correct answer.
+          </p>
+        </div>
+
+        <div class="question-card">
+          <div class="question-body">
+            <div class="question-text">
+              <span class="q-number">7.</span>
+              <span>The guide will first take the tourists to the historic old town.</span>
+            </div>
+            <div class="options options-inline">
+              <label class="option">
+                <input type="radio" name="q7" value="T">
+                <span>True</span>
+              </label>
+              <label class="option">
+                <input type="radio" name="q7" value="F">
+                <span>False</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="question-body">
+            <div class="question-text">
+              <span class="q-number">8.</span>
+              <span>They will visit the city gardens.</span>
+            </div>
+            <div class="options options-inline">
+              <label class="option">
+                <input type="radio" name="q8" value="T">
+                <span>True</span>
+              </label>
+              <label class="option">
+                <input type="radio" name="q8" value="F">
+                <span>False</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="button-row" style="display:flex; justify-content:flex-end; gap:1rem;">
+        <button id="to-reading-btn" class="btn btn-primary btn-large hidden">
+          Submit and continue to part 2 (Reading)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN 2: READING ========== -->
+  <div id="screen-reading" class="page-wrapper hidden reading-page">
+
+    <header class="page-header">
+      <div class="listening-banner">
+        <img src="https://www.dropbox.com/scl/fi/gf4gp856x4c3lfuos5zjz/reading_ribbon.png?rlkey=pr83iiv0kgc2sjb26be1x99vt&st=gxlabaxs&raw=1" alt="Reading ribbon" class="banner-img">
+        <h1 class="banner-title">PART 2: READING</h1>
+      </div>
+    </header>
+
+    <section class="exercise exercise-a">
+      <div class="exercise-header-card">
+        <h2>Exercise A: Numbers 1 to 4</h2>
+        <p>
+          <strong>Read this text. Then do the exercises below.</strong><br>
+          Choose the correct word or phrase to fill the blanks.
+        </p>
+      </div>
+
+      <div class="question-card reading-text-card">
+        <div class="question-body">
+          <p class="reading-text">
+            Welcome to Sunny Beach Hotel! Our hotel offers comfortable rooms with sea views,
+            a swimming pool, and a restaurant serving local and international cuisine.
+            Check-in is from 2 pm, and check-out is by 11 am. We look forward to making your stay enjoyable.
+          </p>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-body">
+          <div class="question-text">
+            <span class="q-number">1.</span>
+            <span>The Sunny Beach Hotel offers rooms with ____________________.</span>
+          </div>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="r1" value="A">
+              <span>city views</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="r1" value="B">
+              <span>sea views</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="r1" value="C">
+              <span>mountain views</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-body">
+          <div class="question-text">
+            <span class="q-number">2.</span>
+            <span>The hotel facilities include a swimming pool and a ____________________.</span>
+          </div>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="r2" value="A">
+              <span>gym</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="r2" value="B">
+              <span>conference hall</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="r2" value="C">
+              <span>restaurant</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-body">
+          <div class="question-text">
+            <span class="q-number">3.</span>
+            <span>Check-in time at the hotel is ____________________.</span>
+          </div>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="r3" value="A">
+              <span>from 2 pm</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="r3" value="B">
+              <span>from 4 pm</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="r3" value="C">
+              <span>from 6 pm</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-body">
+          <div class="question-text">
+            <span class="q-number">4.</span>
+            <span>The restaurant serves ____________________.</span>
+          </div>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="r4" value="A">
+              <span>local cuisine</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="r4" value="B">
+              <span>vegan cuisine</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="r4" value="C">
+              <span>international and vegan cuisine</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="exercise exercise-b">
+      <div class="exercise-header-card">
+        <h2>Exercise B: Numbers 5 to 8</h2>
+        <p>
+          Read this text. Then answer questions 5 to 8 below.
+        </p>
+      </div>
+
+      <div class="question-card reading-text-card">
+        <div class="question-body">
+          <p class="reading-text">
+            Crete is Greece’s largest island, full of mountains, beaches, and ancient history.
+            Visitors explore ancient ruins, like Knossos, and learn about the mythical Minotaur.
+            In towns and villages, life moves at a relaxed pace, with friendly locals and tasty food.
+            The sea borders many coastline towns, offering fresh water and fresh seafood.
+            Hiking on the hills is a pleasure, and one can see olive groves and traditional windmills.
+            Crete is a place where culture, nature, and hospitality come together to welcome travellers.
+          </p>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-body">
+          <div class="question-text">
+            <span class="q-number">5.</span>
+            <span>Which of the following best describes Crete?</span>
+          </div>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="r5" value="A">
+              <span>A large city in Greece with skyscrapers.</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="r5" value="B">
+              <span>Greece’s largest island with mountains and beaches.</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="r5" value="C">
+              <span>A small island known only for its beaches.</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-body">
+          <div class="question-text">
+            <span class="q-number">6.</span>
+            <span>What ancient site is mentioned as an example of ruins to explore?</span>
+          </div>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="r6" value="A">
+              <span>Acropolis</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="r6" value="B">
+              <span>Knossos</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="r6" value="C">
+              <span>Delphi</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-body">
+          <div class="question-text">
+            <span class="q-number">7.</span>
+            <span>According to the text, how is life in towns and villages described?</span>
+          </div>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="r7" value="A">
+              <span>Busy with crowded streets.</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="r7" value="B">
+              <span>Industrial and modern with fast food.</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="r7" value="C">
+              <span>Quiet and traditional with friendly locals.</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-body">
+          <div class="question-text">
+            <span class="q-number">8.</span>
+            <span>Which features are mentioned as part of Crete’s landscape and culture?</span>
+          </div>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="r8" value="A">
+              <span>Olive groves, clear coastal water and fresh seafood.</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="r8" value="B">
+              <span>Rainforests and large metropolitan museums.</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="r8" value="C">
+              <span>Snowy mountains and ski resorts.</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="button-row" style="display:flex; justify-content:flex-end; gap:1rem;">
+      <button id="to-writing-btn" class="btn btn-primary btn-large">
+        continue to part 3 (Writing)
+      </button>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN 3: WRITING ========== -->
+  <div id="screen-writing" class="page-wrapper hidden writing-page">
+
+    <header class="page-header">
+      <div class="listening-banner">
+        <img src="https://www.dropbox.com/scl/fi/5ziw8ohk0h0p1uxhqp2rp/writing_ribbon.png?rlkey=qf1uc01yopp0wayuj42al4sos&st=i4vg7vm1&raw=1" alt="Writing ribbon" class="banner-img">
+        <h1 class="banner-title">PART 3: WRITING</h1>
+      </div>
+    </header>
+
+    <section class="exercise exercise-a">
+      <div class="exercise-header-card">
+        <h2>Task One: Numbers 1 to 4</h2>
+        <p>
+          Choose the correct word to fill the gaps in the text below.<br>
+          You will use <strong>ONLY FOUR</strong> of the words.
+        </p>
+      </div>
+
+      <div class="question-card reading-text-card">
+        <div class="question-body">
+          <p class="writing-gap-text">
+            Rain makes the
+            <span class="gap-blank" data-index="1">(1)</span>
+            shine. The air smells clean and
+            <span class="gap-blank" data-index="2">(2)</span>.
+            I put on my
+            <span class="gap-blank" data-index="3">(3)</span>
+            and boots. I listen to the soft rain on the roof.
+            I feel calm and happy. I like rain because it helps
+            <span class="gap-blank" data-index="4">(4)</span>
+            grow and makes trees look fresh.
+          </p>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-body">
+          <h3 class="word-bank-title">Drag the words into the gaps:</h3>
+          <div id="word-bank" class="word-bank">
+            <button type="button" id="word-A" class="word-chip" draggable="true" data-word="cool">cool</button>
+            <button type="button" id="word-B" class="word-chip" draggable="true" data-word="to">to</button>
+            <button type="button" id="word-C" class="word-chip" draggable="true" data-word="streets">streets</button>
+            <button type="button" id="word-D" class="word-chip" draggable="true" data-word="plants">plants</button>
+            <button type="button" id="word-E" class="word-chip" draggable="true" data-word="at">at</button>
+            <button type="button" id="word-F" class="word-chip" draggable="true" data-word="raincoat">raincoat</button>
+          </div>
+
+          <p class="word-bank-help">
+            Tip: you can double-click on a gap to return its word back to the word bank.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="exercise exercise-b">
+      <div class="exercise-header-card">
+        <h2>Task Two:</h2>
+        <p>
+          Write a 50-word email to a guest confirming their reservation. Include the following information:
+          <br>► Guest name
+          <br>► Check-in date
+          <br>► Number of nights
+          <br>► Request for a special diet (e.g., vegetarian)
+        </p>
+      </div>
+
+      <div class="question-card">
+        <div class="question-body">
+          <label for="task2-answer" class="writing-label">Type your email below:</label>
+          <textarea id="task2-answer" class="writing-textarea" rows="8"
+            placeholder="Write your 50-word email here..."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <div class="button-row" style="display:flex; justify-content:space-between; gap:1rem;">
+      <button id="back-to-reading-btn" class="btn btn-primary btn-large">
+        Back
+      </button>
+
+      <button id="final-submit" class="btn btn-primary btn-large">
+        Submit all answers
+      </button>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN 4: TEST ENDED ========== -->
+  <div id="screen-ended" class="page-wrapper hidden end-page">
+    <header class="page-header">
+      <div class="listening-banner">
+        <img src="https://www.dropbox.com/scl/fi/5ziw8ohk0h0p1uxhqp2rp/writing_ribbon.png?rlkey=qf1uc01yopp0wayuj42al4sos&st=i4vg7vm1&raw=1" alt="Test ended ribbon" class="banner-img">
+        <h1 class="banner-title">TEST ENDED</h1>
+      </div>
+    </header>
+
+    <section class="audio-section">
+      <p class="section-subtitle">
+        The test session has ended. You may now close this window.
+      </p>
+    </section>
+  </div>
+
+  <!-- ========== MODAL ========== -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal-dialog">
+      <h2 id="modal-title" class="modal-title">Message</h2>
+      <p id="modal-message" class="modal-message">...</p>
+      <div class="modal-buttons">
+        <button id="modal-cancel" class="btn btn-secondary">Cancel</button>
+        <button id="modal-ok" class="btn btn-primary">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- APP LOGIC -->
+  <script src="app.js"></script>
+</body>
+</html>
